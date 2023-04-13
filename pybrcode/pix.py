@@ -144,6 +144,7 @@ class Pix(object):
         the description size is: 37 characters max
         For reference:
             if key is CPF     -> 62ch long
+            if key is CNPJ    -> 59ch long
             if key is Phone   -> 58ch long
             if key is Email   -> no reference
             if key is RandKey -> 37 ch
@@ -238,6 +239,7 @@ class Pix(object):
 
 class PixType(object):
     CPF = 'cpf'
+    CNPJ = 'cnpj'
     BRPHONE = 'BRphone'
     EMAIL = 'email'
     RANDKEY = 'random key'
@@ -253,6 +255,7 @@ class PixKeyURI(object):
     has a 36 character long string.
     These are the formats acceptable for keys:
         CPF     -> ###.###.###-##
+        CNPJ    -> ##.###.###/####-##
         Phone   -> (##) ####-#### / (##) #####-####
         Email   -> ###@###.###
         RandKey -> len(key) == 36
@@ -263,14 +266,28 @@ class PixKeyURI(object):
             self.type = PixType.EMAIL
         elif len(key) < 16 and '(' in key:
             self.type = PixType.BRPHONE
-        elif '.' in key:
+        elif '.' in key and '/' in key:
+            self.type = PixType.CNPJ
+        elif '.' in key and '-' in key:
             self.type = PixType.CPF
         else:
             self.type = PixType.RANDKEY
         self.key = key.strip().replace(' ', '')
         self.__validates()
+    def __testAndFormatKeyCNPJ(self) -> bool:
+        self.key = re.sub(r'[\.\/\-]', '', self.key)
+        if len(self.key) != 14 or \
+            self.key in (c * 14 for c in "123456789"): 
+            return False
+        v1 = [5,4,3,2,9,8,7,6,5,4,3,2]
+        v2 = [6,5,4,3,2,9,8,7,6,5,4,3,2]
+        s1 = 11 - sum(int(self.key[i]) * v1[i] for i in range(12)) % 11
+        s2 = 11 - sum(int(self.key[i]) * v2[i] for i in range(13)) % 11
+        s1 = 0 if s1 > 9 else s1
+        s2 = 0 if s2 > 9 else s2
+        return s1 == int(self.key[12]) and s2 == int(self.key[13])
     def __testAndFormatKeyCPF(self) -> bool:
-        self.key = self.key.replace('.', '').replace('-', '')
+        self.key = re.sub(r'[\.\-]', '', self.key)
         if len(self.key) != 11 or \
                 not self.key.isdigit() \
                 or self.key == self.key[::-1]:
@@ -304,6 +321,7 @@ class PixKeyURI(object):
     def __validates(self):
         test = {
             PixType.CPF: self.__testAndFormatKeyCPF,
+            PixType.CNPJ: self.__testAndFormatKeyCNPJ,
             PixType.BRPHONE: self.__testAndFormatKeyBRPhone,
             PixType.EMAIL: self.__testAndFormatKeyEmail,
             PixType.RANDKEY: self.__testRandkey,
@@ -326,6 +344,7 @@ def generate_simple_pix(
     This creates a simple functional Pix object.
     These are the formats acceptable for keys:
         CPF     -> ###.###.###-##
+        CNPJ    -> ##.###.###/####-##
         Phone   -> (##) ####-#### / (##) #####-####
         Email   -> ###@###.###
         RandKey -> len(key) == 36
