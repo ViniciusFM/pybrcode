@@ -23,7 +23,7 @@ class Data(object):
     (type|id, length, value) in each "node".
     Convert the object to string to get the
     pix payload format'''
-    def __init__(self, id:int, value:'[str|list(Data)]'):
+    def __init__(self, id:int, value:'str|list(Data)'):
         self.id = id
         self.__length = None
         self.value = value
