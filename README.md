@@ -156,7 +156,7 @@ def generate_simple_pix(
 A simple example using **pybrcode**
 -----------------------------------
 
-This example uses all mathods and functions mentioned before. You can find this code at [test.py](test.py).
+This example uses all methods and functions mentioned before. You can find this code at [test.py](test.py).
 
 ```python
 from pybrcode.pix import generate_simple_pix
@@ -193,7 +193,7 @@ print(pix)
 Buy me a shot of cachaça, please?
 =================================
 
-If you find this library helpful you're welcome to buy me <span style="text-decoration:line-through">coffee</span> a shot of cachaça which cost only R$ 3,00 at "Bar do Cabaça"! :D
+If you find this library helpful you're welcome to buy me a shot of cachaça which cost only R$ 3,00 at "Bar do Cabaça"! :D
 
 Just read this BRCode with your bank app:
 
