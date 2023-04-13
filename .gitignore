@@ -1,4 +1,7 @@
 __pycache__
 *.pyc
 *.ignore
-.venv
+.venv*
+build
+dist
+pybrcode.egg-info

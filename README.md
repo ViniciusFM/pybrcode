@@ -82,14 +82,12 @@ class Pix(object):
 Installation
 ============
 
-Easy way (PyPi repositories) - Not available yet
-------------------------------------------------
+Easy way (PyPi repositories)
+----------------------------
 By writing this line at your favorite terminal you can download the `pybrcode` library to use for your project.
 ```properties
 pip3 install pybrcode
 ```
-
-**PS: this lib isn't registered at PyPi yet. Please use the [Other Way](#other-way-downloading-this-code) instructions by now.**
 
 Other way (downloading this code)
 --------------------------------
