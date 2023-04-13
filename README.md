@@ -127,6 +127,7 @@ def generate_simple_pix(
     This creates a simple functional Pix object.
     These are the formats acceptable for keys:
         CPF     -> ###.###.###-##
+        CNPJ    -> ##.###.###/####-##
         Phone   -> (##) ####-#### / (##) #####-####
         Email   -> ###@###.###
         RandKey -> len(key) == 36
